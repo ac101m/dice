@@ -6,7 +6,7 @@ A trivial dice program for DnD which I wrote after forgetting to get some physic
 - Python 3 installation
 - Docopt command line library (`pip install docopt`)
 
-## INstallation
+## Installation
 
 Just clone the repository and put the root directory of the project on your
 PATH. Run `dice --help` for usage information.
