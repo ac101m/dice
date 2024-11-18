@@ -32,7 +32,7 @@ def error(message):
     exit(1)
 
 # Random number generator
-# Simple implementation for now
+# Just use python random for now
 def random_number(max):
     return random.randint(0, max)
 
@@ -40,17 +40,17 @@ def random_number(max):
 def roll_dice(side_count):
     return random_number(side_count - 1) + 1
 
-# Calculate serveral rolls
+# Roll a single dice several times and return all the rolls
 def roll_n_dice(side_count, roll_count):
     return [roll_dice(side_count) for r in range(0, roll_count)]
 
-# Verify dice type string and return side count for rolls
+# Verify a dice type string and return the side count for that dice
 def get_side_count(dice_type):
     if dice_type not in DICE_TYPES:
         print("{} is not a valid dice type.".format(dice_type))
         dice_type_list = list(DICE_TYPES.keys())
         list_text = ", ".join(dice_type_list[:-1]) + " or {}".format(dice_type_list[-1])
-        print("Valid dice types are; {}".format(list_text))
+        print("Valid dice types are {}".format(list_text))
         exit(1)
     return DICE_TYPES[dice_type]
 
@@ -85,7 +85,7 @@ def roll(args):
         all_rolls = all_rolls + rolls
     print("All: {} ({})".format(all_rolls, sum(all_rolls)))
 
-# Check the distribution of the dice rolls
+# Check the distribution of dice rolls by rolling many times and printing out roll frequency information
 def check(args):
     dice_type = args["<dice-type>"]
     roll_count = int(args["<roll-count>"])
