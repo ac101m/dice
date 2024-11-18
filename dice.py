@@ -67,17 +67,12 @@ def parse_roll_command(roll_command):
     side_count = get_side_count("d{}".format(tokens[1]))
     return (side_count, roll_count)
 
-# Perform a roll
+# Execute a single roll command
 def execute_roll_command(roll_command):
     side_count, roll_count = parse_roll_command(roll_command)
     return roll_n_dice(side_count, roll_count)
-    print("Rolls: {}".format(rolls))
-    print("Total: {}".format(sum(rolls)))
-    if roll_command == "2d20":
-        print("Advantage: {}".format(max(rolls)))
-        print("Disadvantage: {}".format(min(rolls)))
 
-# Perform a roll consisting of rolling any number of dice
+# Perform a roll consisting of any number of roll commands
 def roll(args):
     roll_commands = args["<roll-commands>"]
     results = {}
