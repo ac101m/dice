@@ -5,7 +5,7 @@ DND dice thing.
 
 Usage:
     dice (-h | --help)
-    dice roll <roll-type>
+    dice roll <roll-commands>...
     dice check <dice-type> <roll-count>
 
 options:
@@ -44,7 +44,7 @@ def roll_dice(side_count):
 def roll_n_dice(side_count, roll_count):
     return [roll_dice(side_count) for r in range(0, roll_count)]
 
-# Verify dice type string
+# Verify dice type string and return side count for rolls
 def get_side_count(dice_type):
     if dice_type not in DICE_TYPES:
         print("{} is not a valid dice type.".format(dice_type))
@@ -52,13 +52,12 @@ def get_side_count(dice_type):
         list_text = ", ".join(dice_type_list[:-1]) + " or {}".format(dice_type_list[-1])
         print("Valid dice types are; {}".format(list_text))
         exit(1)
-    
     return DICE_TYPES[dice_type]
 
-# Parse a roll command
-def parse_roll_command(command):
-    format_error_message = "Invalid command format '{}'. Expecting <count>d<dice-type>".format(command)
-    tokens = command.split("d")
+# Parse a roll command, returning side count and roll count
+def parse_roll_command(roll_command):
+    format_error_message = "Invalid command format '{}'. Expecting <count>d<dice-type>".format(roll_command)
+    tokens = roll_command.split("d")
     if len(tokens) != 2:
         error(format_error_message)
     try:
@@ -69,15 +68,27 @@ def parse_roll_command(command):
     return (side_count, roll_count)
 
 # Perform a roll
-def roll(args):
-    roll_command = args["<roll-type>"]
+def execute_roll_command(roll_command):
     side_count, roll_count = parse_roll_command(roll_command)
-    rolls = roll_n_dice(side_count, roll_count)
+    return roll_n_dice(side_count, roll_count)
     print("Rolls: {}".format(rolls))
     print("Total: {}".format(sum(rolls)))
     if roll_command == "2d20":
         print("Advantage: {}".format(max(rolls)))
         print("Disadvantage: {}".format(min(rolls)))
+
+# Perform a roll consisting of rolling any number of dice
+def roll(args):
+    roll_commands = args["<roll-commands>"]
+    results = {}
+    for command in roll_commands:
+        results[command] = execute_roll_command(command)
+    for command, rolls in results.items():
+        print("{}: {} ({})".format(command, rolls, sum(rolls)))
+    all_rolls = []
+    for rolls in results.values():
+        all_rolls = all_rolls + rolls
+    print("All: {} ({})".format(all_rolls, sum(all_rolls)))
 
 # Check the distribution of the dice rolls
 def check(args):
