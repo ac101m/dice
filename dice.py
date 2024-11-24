@@ -14,6 +14,7 @@ options:
 
 import docopt
 import random
+import art
 
 # All the dice types and their side counts
 DICE_TYPES = {
@@ -79,11 +80,9 @@ def roll(args):
     for command in roll_commands:
         results[command] = execute_roll_command(command)
     for command, rolls in results.items():
-        print("{}: {} ({})".format(command, rolls, sum(rolls)))
-    all_rolls = []
-    for rolls in results.values():
-        all_rolls = all_rolls + rolls
-    print("All: {} ({})".format(all_rolls, sum(all_rolls)))
+        print("{}:".format(command))
+        roll_text = "   ".join([str(r) for r in rolls]) + "   ({})".format(sum(rolls))
+        art.tprint("{}".format(roll_text))
 
 # Check the distribution of dice rolls by rolling many times and printing out roll frequency information
 def check(args):
